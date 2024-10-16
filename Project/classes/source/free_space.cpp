@@ -23,17 +23,18 @@ const PointPairVector& FreeSpace::getL() const { return L; }
 // Getter for B results
 const PointPairVector& FreeSpace::getB() const { return B; }
 
+// Setter for epsilon
+void FreeSpace::setEpsilon(double newEpsilon) {
+  epsilon = newEpsilon;
+  computeFreeSpace();  // Recompute L and B with the new epsilon value
+}
+
 // Function to compute L and B
 void FreeSpace::computeFreeSpace() {
   L.clear();
   B.clear();
   processCurveForL();
   processCurveForB();
-}
-
-void FreeSpace::setEpsilon(double newEpsilon) {
-  epsilon = newEpsilon;
-  computeFreeSpace();  // Recompute L and B with the new epsilon value
 }
 
 void FreeSpace::processCurveForL() {

@@ -18,14 +18,16 @@ class FreeSpace {
   // Destructor
   ~FreeSpace();
 
+  // Getter
   const PolygonalCurve& getCurveP() const;
   const PolygonalCurve& getCurveQ() const;
   double getEpsilon() const;
   const PointPairVector& getL() const;
   const PointPairVector& getB() const;
+  // Setter
+  void setEpsilon(double newEpsilon);
 
   void computeFreeSpace();
-  void setEpsilon(double newEpsilon);
 
  private:
   PolygonalCurve P;  // Polygonal curve P
