@@ -25,8 +25,15 @@ const PointPairVector& FreeSpace::getB() const { return B; }
 
 // Function to compute L and B
 void FreeSpace::computeFreeSpace() {
+  L.clear();
+  B.clear();
   processCurveForL();
   processCurveForB();
+}
+
+void FreeSpace::setEpsilon(double newEpsilon) {
+  epsilon = newEpsilon;
+  computeFreeSpace();  // Recompute L and B with the new epsilon value
 }
 
 void FreeSpace::processCurveForL() {

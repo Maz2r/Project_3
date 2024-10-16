@@ -25,6 +25,7 @@ class FreeSpace {
   const PointPairVector& getB() const;
 
   void computeFreeSpace();
+  void setEpsilon(double newEpsilon);
 
  private:
   PolygonalCurve P;  // Polygonal curve P
