@@ -4,6 +4,7 @@
 #include <fstream>
 #include <limits>
 
+#include "critical_value.h"
 #include "free_space.h"
 #include "polygonal_curve.h"
 
@@ -24,45 +25,44 @@ void print_point_set(const Point_set& point_set) {
 }
 
 int main(int, char**) {
-  // Define polygonal curve P (a more complex polygonal line)
+  // Define a polygonal curve P with multiple points
   vector<Point_2> pointsP = {Point_2(0.0, 0.0), Point_2(2.0, 1.0),
-                             Point_2(4.0, 0.0), Point_2(6.0, 1.0),
-                             Point_2(8.0, 0.0)};
-
+                             Point_2(4.0, 0.0), Point_2(6.0, 1.0)};
   PolygonalCurve curveP(pointsP);
 
-  // Define polygonal curve Q (a zigzag line pattern)
-  vector<Point_2> pointsQ = {Point_2(1.0, 0.5), Point_2(3.0, 1.5),
-                             Point_2(5.0, 0.5), Point_2(7.0, 1.5),
-                             Point_2(9.0, 0.5)};
-
+  // Define a polygonal curve Q with multiple points
+  vector<Point_2> pointsQ = {Point_2(1.0, 2.0), Point_2(3.0, 3.0),
+                             Point_2(5.0, 2.0), Point_2(7.0, 3.0)};
   PolygonalCurve curveQ(pointsQ);
 
-  // Set epsilon value (e.g., 0.5)
-  double epsilon = 1.0;
+  // Create the CriticalValue object and compute the distances
+  CriticalValue criticalValue(curveP, curveQ);
 
-  // Create the FreeSpace object
-  FreeSpace freeSpace(curveP, curveQ, epsilon);
-
-  // Compute the free space
-  freeSpace.computeFreeSpace();
-
-  // Get and display the results for L (for curve P)
-  cout << "Results for L (curve P):" << endl;
-  const PointPairVector& L = freeSpace.getL();
-  for (size_t i = 0; i < L.size(); ++i) {
-    cout << "L[" << i << "]: ((" << L[i].first.x() << ", " << L[i].first.y()
-         << "), (" << L[i].second.x() << ", " << L[i].second.y() << "))"
-         << endl;
+  // Display the critical values (all type a, b, c combined and sorted)
+  const vector<double>& criticalValues = criticalValue.getCriticalValues();
+  cout << "Critical Values (sorted):" << endl;
+  for (size_t i = 0; i < criticalValues.size(); ++i) {
+    cout << criticalValues[i] << endl;
   }
 
-  // Get and display the results for B (for curve Q)
-  cout << "Results for B (curve Q):" << endl;
-  const PointPairVector& B = freeSpace.getB();
-  for (size_t i = 0; i < B.size(); ++i) {
-    cout << "B[" << i << "]: ((" << B[i].first.x() << ", " << B[i].first.y()
-         << "), (" << B[i].second.x() << ", " << B[i].second.y() << "))"
-         << endl;
+  // Display Type A, B, and C values separately
+  const vector<double>& typeAValues = criticalValue.getTypeAValues();
+  const vector<double>& typeBValues = criticalValue.getTypeBValues();
+  const vector<double>& typeCValues = criticalValue.getTypeCValues();
+
+  cout << "\nType A Values:" << endl;
+  for (double value : typeAValues) {
+    cout << value << endl;
+  }
+
+  cout << "\nType B Values:" << endl;
+  for (double value : typeBValues) {
+    cout << value << endl;
+  }
+
+  cout << "\nType C Values:" << endl;
+  for (double value : typeCValues) {
+    cout << value << endl;
   }
 
   return 0;
