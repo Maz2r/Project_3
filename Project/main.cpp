@@ -4,7 +4,6 @@
 #include <fstream>
 #include <limits>
 
-#include "dummy.h"
 #include "free_space.h"
 #include "polygonal_curve.h"
 
