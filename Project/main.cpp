@@ -41,10 +41,6 @@ int main(int, char**) {
   // Create FreeSpace object with initial epsilon
   FreeSpace freeSpace(curveP, curveQ, epsilon);
 
-  // Compute the free space
-  cout << "Computing free space with epsilon = " << epsilon << endl;
-  freeSpace.computeFreeSpace();
-
   // Display the results for L (for curve P)
   cout << "Results for L (curve P):" << endl;
   const PointPairVector& L = freeSpace.getL();

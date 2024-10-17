@@ -3,7 +3,9 @@
 // Constructor: initialize with two curves and epsilon
 FreeSpace::FreeSpace(const PolygonalCurve& P, const PolygonalCurve& Q,
                      double epsilon)
-    : P(P), Q(Q), epsilon(epsilon) {}
+    : P(P), Q(Q), epsilon(epsilon) {
+  computeFreeSpace();
+}
 
 // Destructor
 FreeSpace::~FreeSpace() {}
