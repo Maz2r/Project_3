@@ -26,40 +26,48 @@ void print_point_set(const Point_set& point_set) {
 }
 
 int main(int, char**) {
-  // Define two simple polygonal curves
-  std::vector<Point_2> pointsP = {Point_2(0, 0), Point_2(1, 2), Point_2(2, 3)};
-  std::vector<Point_2> pointsQ = {Point_2(0, 0), Point_2(1, 1), Point_2(2, 2)};
-
-  // Create polygonal curves P and Q
+  // Define points for Polygonal Curve P
+  std::vector<Point_2> pointsP = {Point_2(0, 0), Point_2(1, 1), Point_2(2, 2),
+                                  Point_2(3, 3)};
   PolygonalCurve P(pointsP);
+
+  // Define points for Polygonal Curve Q
+  std::vector<Point_2> pointsQ = {Point_2(1, -1), Point_2(2, 0), Point_2(3, 1),
+                                  Point_2(4, 2)};
   PolygonalCurve Q(pointsQ);
 
-  // Set an epsilon value
+  // Set the epsilon value
   double epsilon = 1.5;
 
-  // Create a DecisionProblem object with P, Q, and epsilon
-  DecisionProblem decision(P, Q, epsilon);
+  // Create a DecisionProblem object
+  DecisionProblem decisionProblem(P, Q, epsilon);
 
-  // Test if a monotone curve exists
-  if (decision.doesMonotoneCurveExist()) {
-    std::cout << "A monotone curve exists for epsilon = " << epsilon
-              << std::endl;
+  // Check if a monotone curve exists
+  bool result = decisionProblem.doesMonotoneCurveExist();
+
+  // Output the result
+  if (result) {
+    std::cout
+        << "A monotone curve exists between the polygonal curves with epsilon "
+        << epsilon << "." << std::endl;
   } else {
-    std::cout << "No monotone curve exists for epsilon = " << epsilon
-              << std::endl;
+    std::cout
+        << "No monotone curve exists between the polygonal curves with epsilon "
+        << epsilon << "." << std::endl;
   }
 
-  // Change epsilon value and recheck
-  double newEpsilon = 0.5;
-  decision.setEpsilon(newEpsilon);
+  // Test updating epsilon and rechecking
+  double newEpsilon = 1.4;
+  decisionProblem.setEpsilon(newEpsilon);
+  result = decisionProblem.doesMonotoneCurveExist();
 
-  // Test again after updating epsilon
-  if (decision.doesMonotoneCurveExist()) {
-    std::cout << "A monotone curve exists for epsilon = " << newEpsilon
-              << std::endl;
+  // Output the new result
+  if (result) {
+    std::cout << "With updated epsilon " << newEpsilon
+              << ", a monotone curve exists." << std::endl;
   } else {
-    std::cout << "No monotone curve exists for epsilon = " << newEpsilon
-              << std::endl;
+    std::cout << "With updated epsilon " << newEpsilon
+              << ", no monotone curve exists." << std::endl;
   }
 
   return 0;

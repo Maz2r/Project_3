@@ -31,6 +31,9 @@ class DecisionProblem {
   // Helper functions for checking the conditions
   bool checkStartAndEndConditions();
   bool checkIfMonotoneCurveExists();
+
+  // Recursive helper function to determine monotone curve existence
+  bool recursiveCheck(const Point_2& currentPoint, bool isFromL);
 };
 
 #endif  // DECISION_PROBLEM_H
