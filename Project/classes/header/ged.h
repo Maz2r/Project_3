@@ -9,7 +9,9 @@
 
 using namespace std;
 
-typedef vector<int> CurveString;  // A string that was transformed from a curve
+typedef pair<int, int> CurveAlphabet;  // Alphabet for curve transformations
+typedef vector<CurveAlphabet>
+    CurveString;  // A string that was transformed from a curve
 typedef pair<CurveString, CurveString>
     CurveStringPair;                      // A pair of CurveString
 typedef vector<pair<int, int>> Matching;  // A matching of points that has a
