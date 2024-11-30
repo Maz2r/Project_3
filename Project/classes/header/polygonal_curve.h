@@ -17,6 +17,9 @@ class PolygonalCurve {
   // Constructor to initialize the curve with a list of points
   PolygonalCurve(const vector<Point_2>& points);
 
+  // Copy constructor
+  PolygonalCurve(const PolygonalCurve& P_);
+
   // Method to add a point to the curve
   void addPoint(const Point_2& point);
 

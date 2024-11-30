@@ -9,6 +9,10 @@ using namespace std;
 PolygonalCurve::PolygonalCurve(const vector<Point_2>& points)
     : m_points(points) {}
 
+// Copy constructor
+PolygonalCurve::PolygonalCurve(const PolygonalCurve& P_)
+    : m_points(P_.m_points) {}
+
 // Adds a point to the polygonal curve
 void PolygonalCurve::addPoint(const Point_2& point) {
   m_points.push_back(point);
