@@ -35,6 +35,9 @@ class PolygonalCurve {
   // Print the points of the curve (for debugging or output)
   void printCurve() const;
 
+  // Shift the origin of the grid
+  void shiftOrigin(const Point_2& newOrigin);
+
  private:
   vector<Point_2> m_points;  // Vector to store the sequence of points
 };
