@@ -39,7 +39,7 @@ double computeSquareRootApproxGED(const PolygonalCurve& P,
       // Compute String Edit Distance (SED)
       Matching approximationMatching =
           SED(transformedStrings.first, transformedStrings.second,
-              (8 * sqrt(2) + 2) * g);
+              12 * sqrt(n) + 2 * g);
 
       // If a matching is found, return the cost(which is
       // O(n^(1/2))-approximation of GED)
