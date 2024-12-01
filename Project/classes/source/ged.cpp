@@ -1,6 +1,7 @@
 #include "ged.h"
 
 #include <cstdlib>
+#include <limits>
 
 namespace GED {
 
@@ -104,9 +105,67 @@ CurveStringPair transformCurvesToStrings(const PolygonalCurve& P,
   return {stringP, stringQ};
 }
 
-// Computes the String Edit Distance (SED)
+// Computes the String Edit Distance (SED) for GED
 Matching SED(const CurveString& S, const CurveString& T, double threshold) {
-  return {};
+  size_t n = S.size();
+  int k = static_cast<int>(floor(threshold));
+
+  // Step 1: Initialize the (n+1) by (n+1) DP table D
+  vector<vector<int>> D(n + 1, vector<int>(n + 1, -1));
+  for (size_t i = 0; i <= n; ++i) {
+    D[i][0] = static_cast<int>(i);
+    D[0][i] = static_cast<int>(i);
+  }
+
+  // Step 2: Initialize the vector L(that saves L values for each h and e) with
+  // length 2k+1
+  vector<int> L(2 * k + 1, -1);
+
+  // Step 3: Dynamic programming loop
+  for (int e = 0; e <= k; ++e) {
+    L[k - (e + 1)] = e;   // h < 0: L_h,|h|-2 to |h|-1
+    L[k + (e + 1)] = -1;  // h >= 0: L_h,|h|-2 to -1
+
+    for (int h = -e; h <= e; ++h) {
+      // Algorithm 3(from referenced paper)
+      if (h % 2 != e % 2) {
+        continue;
+      }
+
+      // Check if substitution values are infinity
+      if (L[k + h - 1] == numeric_limits<int>::max() ||
+          L[k + h + 1] == numeric_limits<int>::max()) {
+        L[k + h] = numeric_limits<int>::max();  // Set L[k + h] to infinity
+        continue;
+      }
+
+      // Compute r based on L
+      int r = max(L[k + h - 1], L[k + h + 1] + 1);
+
+      // Slide
+      while (r + 1 <= n && r + h + 1 <= n && (S[r] == T[r + h])) {
+        D[r + 1][r + h + 1] = e;
+        ++r;
+      }
+
+      // Set L_h,e
+      if (r >= static_cast<int>(n) || r + h >= static_cast<int>(n)) {
+        L[k + h] = numeric_limits<int>::max();  // Set to "infinity"
+      } else {
+        L[k + h] = r;
+      }
+    }
+  }
+
+  // Step 4: Check if the edit distance is within the threshold
+  if (D[n][n] == -1) {
+    return {};  // Return empty matching
+  }
+
+  // Step 5: Backtrace the DP table and return matching
+  return backtrace(D);
 }
+
+Matching backtrace(const vector<vector<int>>& D) { return {}; }
 
 }  // namespace GED

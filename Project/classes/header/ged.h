@@ -31,8 +31,11 @@ double computeCost(const PolygonalCurve& P, const PolygonalCurve& Q,
 CurveStringPair transformCurvesToStrings(const PolygonalCurve& P,
                                          const PolygonalCurve& Q, int g);
 
-// Computes the String Edit Distance (SED)
+// Computes the String Edit Distance (SED) for GED
 Matching SED(const CurveString& S, const CurveString& T, double threshold);
+
+// Backtrace the DP table and return matching
+Matching backtrace(const vector<vector<int>>& D);
 
 }  // namespace GED
 
