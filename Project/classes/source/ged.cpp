@@ -149,7 +149,7 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
       }
 
       // Set L_h,e
-      if (r >= static_cast<int>(n) || r + h >= static_cast<int>(n)) {
+      if (r > static_cast<int>(n) || r + h > static_cast<int>(n)) {
         L[k + h] = numeric_limits<int>::max();  // Set to "infinity"
       } else {
         L[k + h] = r;
