@@ -38,6 +38,9 @@ class PolygonalCurve {
   // Shift the origin of the grid
   void shiftOrigin(const Point_2& newOrigin);
 
+  // Scale the grid on which the points of the curve lie
+  void scaleGrid(double scalingFactor);
+
  private:
   vector<Point_2> m_points;  // Vector to store the sequence of points
 };
