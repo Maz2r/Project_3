@@ -70,3 +70,12 @@ void PolygonalCurve::scaleGrid(double scalingFactor) {
     point = Point_2(scaledX, scaledY);  // Update the point
   }
 }
+
+// Converts the coordinates of points to floor integer values
+void PolygonalCurve::floorCoordinates() {
+  for (auto& point : m_points) {
+    double flooredX = floor(point.x());
+    double flooredY = floor(point.y());
+    point = Point_2(flooredX, flooredY);  // Update the point
+  }
+}

@@ -41,6 +41,9 @@ class PolygonalCurve {
   // Scale the grid on which the points of the curve lie
   void scaleGrid(double scalingFactor);
 
+  // Convert coordinates of points to floor integer values
+  void floorCoordinates();
+
  private:
   vector<Point_2> m_points;  // Vector to store the sequence of points
 };
