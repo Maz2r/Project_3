@@ -1,5 +1,7 @@
 #include "ged.h"
 
+#include <cstdlib>
+
 namespace GED {
 
 // Computes O(n^(1/2))-approximation of GED
@@ -62,7 +64,44 @@ double computeCost(const PolygonalCurve& P, const PolygonalCurve& Q,
 // Transfroms the curves into string by randomly shifted grid
 CurveStringPair transformCurvesToStrings(const PolygonalCurve& P,
                                          const PolygonalCurve& Q, int g) {
-  return {{}, {}};
+  size_t n = min(P.numPoints(), Q.numPoints());
+
+  // Step 1: Calculate delta
+  double delta = g / sqrt(n);
+
+  // Step 2: Pick random values x_o, y_o in [0, delta]
+  double x_o = static_cast<double>(rand()) / RAND_MAX * delta;
+  double y_o = static_cast<double>(rand()) / RAND_MAX * delta;
+
+  // Step 3: Copy P and Q
+  PolygonalCurve convertedP = P;
+  PolygonalCurve convertedQ = Q;
+
+  // Step 4: Set the new origin for both curves
+  convertedP.shiftOrigin(Point_2(x_o, y_o));
+  convertedQ.shiftOrigin(Point_2(x_o, y_o));
+
+  // Step 5: Scale the grid with delta as the scaling factor
+  convertedP.scaleGrid(delta);
+  convertedQ.scaleGrid(delta);
+
+  // Step 6: Floor the coordinates of the points
+  convertedP.floorCoordinates();
+  convertedQ.floorCoordinates();
+
+  // Step 7: Set CurveStrings with converted curves
+  CurveString stringP, stringQ;
+  for (size_t i = 0; i < convertedP.numPoints(); ++i) {
+    stringP.emplace_back(static_cast<int>(convertedP.getPoint(i).x()),
+                         static_cast<int>(convertedP.getPoint(i).y()));
+  }
+  for (size_t i = 0; i < convertedQ.numPoints(); ++i) {
+    stringQ.emplace_back(static_cast<int>(convertedQ.getPoint(i).x()),
+                         static_cast<int>(convertedQ.getPoint(i).y()));
+  }
+
+  // Step 8: Return the CurveStringPair
+  return {stringP, stringQ};
 }
 
 // Computes the String Edit Distance (SED)
