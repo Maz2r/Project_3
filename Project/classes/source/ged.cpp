@@ -158,7 +158,7 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
   }
 
   // Step 4: Check if the edit distance is within the threshold
-  if (D[n][n] == -1) {
+  if (D[n][n] == -1 || D[n][n] == numeric_limits<int>::max()) {
     return {};  // Return empty matching
   }
 
