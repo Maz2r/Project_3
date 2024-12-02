@@ -59,7 +59,23 @@ double computeSquareRootApproxGED(const PolygonalCurve& P,
 // Computes the GED cost for given matching for two polygonal curves P, Q
 double computeCost(const PolygonalCurve& P, const PolygonalCurve& Q,
                    const Matching& matching) {
-  return 0.0;
+  double cost = 0.0;
+
+  // Step 1: Compute the sum of distances for the matching
+  for (const auto& match : matching) {
+    int i = match.first;
+    int j = match.second;
+
+    double dx = P.getPoint(i).x() - Q.getPoint(j).x();
+    double dy = P.getPoint(i).y() - Q.getPoint(j).y();
+    cost += sqrt(dx * dx + dy * dy);
+  }
+
+  // Step 2: Add the gap penalty for unmatched points
+  size_t matchingLength = matching.size();
+  cost += (P.numPoints() - matchingLength) + (Q.numPoints() - matchingLength);
+
+  return cost;
 }
 
 // Transfroms the curves into string by randomly shifted grid
