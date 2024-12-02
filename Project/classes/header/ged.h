@@ -7,15 +7,15 @@
 
 #include "polygonal_curve.h"
 
-using namespace std;
-
-typedef pair<int, int> CurveAlphabet;  // Alphabet for curve transformations
-typedef vector<CurveAlphabet>
+typedef std::pair<int, int>
+    CurveAlphabet;  // Alphabet for curve transformations
+typedef std::vector<CurveAlphabet>
     CurveString;  // A string that was transformed from a curve
-typedef pair<CurveString, CurveString>
-    CurveStringPair;                      // A pair of CurveString
-typedef vector<pair<int, int>> Matching;  // A matching of points that has a
-                                          // pair((index, index)) as an element
+typedef std::pair<CurveString, CurveString>
+    CurveStringPair;  // A pair of CurveString
+typedef std::vector<std::pair<int, int>>
+    Matching;  // A matching of points that has a
+               // pair((index, index)) as an element
 
 namespace GED {
 
@@ -35,7 +35,7 @@ CurveStringPair transformCurvesToStrings(const PolygonalCurve& P,
 Matching SED(const CurveString& S, const CurveString& T, double threshold);
 
 // Backtrace the DP table and return matching
-Matching backtrace(const vector<vector<int>>& D);
+Matching backtrace(const std::vector<std::vector<int>>& D);
 
 }  // namespace GED
 

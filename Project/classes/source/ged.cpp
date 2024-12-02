@@ -5,6 +5,8 @@
 #include <iostream>
 #include <limits>
 
+using namespace std;
+
 namespace GED {
 
 // Computes O(n^(1/2))-approximation of GED
