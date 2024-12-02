@@ -1,6 +1,7 @@
 #include "ged.h"
 
 #include <cstdlib>
+#include <iostream>
 #include <limits>
 
 namespace GED {
@@ -139,14 +140,14 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
 
   // Step 3: Dynamic programming loop
   for (int e = 0; e <= k; ++e) {
+    // Set initial values for L_h,e of diagonal -(e+1), (e+1)
     L[k - (e + 1)] = e;   // h < 0: L_h,|h|-2 to |h|-1
     L[k + (e + 1)] = -1;  // h >= 0: L_h,|h|-2 to -1
 
     for (int h = -e; h <= e; ++h) {
       // Algorithm 3(from referenced paper)
-      if (h % 2 != e % 2) {
-        continue;
-      }
+      if (abs(h) % 2 != e % 2)
+        continue;  // L_h,e is well-defined only if (h mod 2) == (e mod 2)
 
       // Check if substitution values are infinity
       if (L[k + h - 1] == numeric_limits<int>::max() ||
@@ -159,7 +160,9 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
       int r = max(L[k + h - 1], L[k + h + 1] + 1);
 
       // Slide
-      while (r + 1 <= n && r + h + 1 <= n && (S[r] == T[r + h])) {
+      if (r <= n && r + h <= n) D[r][r + h] = e;
+      while (r + 1 <= n && r + h + 1 <= n &&
+             (S[(r + 1) - 1] == T[(r + h + 1) - 1])) {
         D[r + 1][r + h + 1] = e;
         ++r;
       }
@@ -182,6 +185,7 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
   return backtrace(D);
 }
 
+// Backtrace the DP table and return matching
 Matching backtrace(const vector<vector<int>>& D) {
   size_t n = D.size() - 1;
   size_t x = n, y = n;
