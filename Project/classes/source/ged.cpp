@@ -166,6 +166,31 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
   return backtrace(D);
 }
 
-Matching backtrace(const vector<vector<int>>& D) { return {}; }
+Matching backtrace(const vector<vector<int>>& D) {
+  size_t n = D.size() - 1;
+  size_t x = n, y = n;
+
+  Matching M;  // Initialize an empty matching
+
+  while (x != 0 || y != 0) {
+    if (x > 0 && y > 0 && D[x][y] == D[x - 1][y - 1]) {
+      // Diagonal move: match (x, y)
+      M.emplace_back(x - 1, y - 1);
+      --x;
+      --y;
+    } else if (y > 0 && D[x][y] == D[x][y - 1] + 1) {
+      // Left move: skip a point in T
+      --y;
+    } else if (x > 0 && D[x][y] == D[x - 1][y] + 1) {
+      // Up move: skip a point in S
+      --x;
+    }
+  }
+
+  // Add the final point (x, y) to the matching
+  M.emplace_back(x, y);
+
+  return M;
+}
 
 }  // namespace GED
