@@ -1,6 +1,7 @@
 #include "ged.h"
 
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include <limits>
 
@@ -88,6 +89,7 @@ CurveStringPair transformCurvesToStrings(const PolygonalCurve& P,
   double delta = g / sqrt(n);
 
   // Step 2: Pick random values x_o, y_o in [0, delta]
+  srand(time(NULL));
   double x_o = static_cast<double>(rand()) / RAND_MAX * delta;
   double y_o = static_cast<double>(rand()) / RAND_MAX * delta;
 
