@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iostream>
 #include <limits>
+#include <random>
 
 using namespace std;
 
@@ -91,9 +92,12 @@ CurveStringPair transformCurvesToStrings(const PolygonalCurve& P,
   double delta = g / sqrt(n);
 
   // Step 2: Pick random values x_o, y_o in [0, delta]
-  srand(time(NULL));
-  double x_o = static_cast<double>(rand()) / RAND_MAX * delta;
-  double y_o = static_cast<double>(rand()) / RAND_MAX * delta;
+  random_device rd;
+  mt19937 gen(rd());
+  uniform_real_distribution<> dis(0.0, delta);
+
+  double x_o = dis(gen);
+  double y_o = dis(gen);
 
   // Step 3: Copy P and Q
   PolygonalCurve convertedP = P;
@@ -139,7 +143,7 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
   }
 
   // Step 2: Initialize the vector L(that saves L values for each h and e) with
-  // length 2k+1
+  // length 2k+3
   vector<int> L(2 * (k + 1) + 1, -1);
 
   // Step 3: Dynamic programming loop
@@ -165,8 +169,8 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
       int r = max(L[(k + 1) + h - 1], L[(k + 1) + h + 1] + 1);
 
       // Slide
-      if (r <= n && r + h <= n) D[r][r + h] = e;
-      while (r + 1 <= n && r + h + 1 <= n &&
+      if (r >= 0 && r <= n && r + h >= 0 && r + h <= n) D[r][r + h] = e;
+      while (r + 1 > 0 && r + 1 <= n && r + h + 1 > 0 && r + h + 1 <= n &&
              (S[(r + 1) - 1] == T[(r + h + 1) - 1])) {
         D[r + 1][r + h + 1] = e;
         ++r;
@@ -182,7 +186,7 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
   }
 
   // Step 4: Check if the edit distance is within the threshold
-  if (D[n][n] == -1 || D[n][n] == numeric_limits<int>::max()) {
+  if (D[n][n] == -1) {
     return {};  // Return empty matching
   }
 
