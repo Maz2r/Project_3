@@ -93,8 +93,8 @@ int main(int, char**) {
                               Point_2(2.0, 2.0)};
 
   // Test Case 6: Randomly generated complex point sequences
-  vector<Point_2> pointsP6 = generateRandomPoints(16, -2.0, 2.0);
-  vector<Point_2> pointsQ6 = generateRandomPoints(16, -2.0, 2.0);
+  vector<Point_2> pointsP6 = generateRandomPoints(256, -2.0, 2.0);
+  vector<Point_2> pointsQ6 = generateRandomPoints(256, -2.0, 2.0);
 
   // Run tests
   cout << "Test Case 1: Simple Linear Curves" << endl;

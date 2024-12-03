@@ -140,13 +140,13 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
 
   // Step 2: Initialize the vector L(that saves L values for each h and e) with
   // length 2k+1
-  vector<int> L(2 * k + 1, -1);
+  vector<int> L(2 * (k + 1) + 1, -1);
 
   // Step 3: Dynamic programming loop
   for (int e = 0; e <= k; ++e) {
     // Set initial values for L_h,e of diagonal -(e+1), (e+1)
-    L[k - (e + 1)] = e;   // h < 0: L_h,|h|-2 to |h|-1
-    L[k + (e + 1)] = -1;  // h >= 0: L_h,|h|-2 to -1
+    L[(k + 1) - (e + 1)] = e;   // h < 0: L_h,|h|-2 to |h|-1
+    L[(k + 1) + (e + 1)] = -1;  // h >= 0: L_h,|h|-2 to -1
 
     for (int h = -e; h <= e; ++h) {
       // Algorithm 3(from referenced paper)
@@ -154,14 +154,15 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
         continue;  // L_h,e is well-defined only if (h mod 2) == (e mod 2)
 
       // Check if substitution values are infinity
-      if (L[k + h - 1] == numeric_limits<int>::max() ||
-          L[k + h + 1] == numeric_limits<int>::max()) {
-        L[k + h] = numeric_limits<int>::max();  // Set L[k + h] to infinity
+      if (L[(k + 1) + h - 1] == numeric_limits<int>::max() ||
+          L[(k + 1) + h + 1] == numeric_limits<int>::max()) {
+        L[(k + 1) + h] =
+            numeric_limits<int>::max();  // Set L[k + h] to infinity
         continue;
       }
 
       // Compute r based on L
-      int r = max(L[k + h - 1], L[k + h + 1] + 1);
+      int r = max(L[(k + 1) + h - 1], L[(k + 1) + h + 1] + 1);
 
       // Slide
       if (r <= n && r + h <= n) D[r][r + h] = e;
@@ -173,9 +174,9 @@ Matching SED(const CurveString& S, const CurveString& T, double threshold) {
 
       // Set L_h,e
       if (r > static_cast<int>(n) || r + h > static_cast<int>(n)) {
-        L[k + h] = numeric_limits<int>::max();  // Set to "infinity"
+        L[(k + 1) + h] = numeric_limits<int>::max();  // Set to "infinity"
       } else {
-        L[k + h] = r;
+        L[(k + 1) + h] = r;
       }
     }
   }
@@ -196,7 +197,7 @@ Matching backtrace(const vector<vector<int>>& D) {
 
   Matching M;  // Initialize an empty matching
 
-  while (x != 0 || y != 0) {
+  while (x > 0 || y > 0) {
     if (x > 0 && y > 0 && D[x][y] == D[x - 1][y - 1]) {
       // Diagonal move: match (x, y)
       M.emplace_back(x - 1, y - 1);
@@ -210,9 +211,6 @@ Matching backtrace(const vector<vector<int>>& D) {
       --x;
     }
   }
-
-  // Add the final point (x, y) to the matching
-  M.emplace_back(x, y);
 
   return M;
 }
