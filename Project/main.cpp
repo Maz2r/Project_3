@@ -98,21 +98,27 @@ int main(int, char**) {
 
   // Run tests
   cout << "Test Case 1: Simple Linear Curves" << endl;
+  testFDistance(pointsP1, pointsQ1);
   testGED(pointsP1, pointsQ1);
 
   cout << "\nTest Case 2: Complex Paths" << endl;
+  testFDistance(pointsP2, pointsQ2);
   testGED(pointsP2, pointsQ2);
 
   cout << "\nTest Case 3: Horizontal and Vertical Lines" << endl;
+  testFDistance(pointsP3, pointsQ3);
   testGED(pointsP3, pointsQ3);
 
   cout << "\nTest Case 4: Zigzag Patterns" << endl;
+  testFDistance(pointsP4, pointsQ4);
   testGED(pointsP4, pointsQ4);
 
   cout << "\nTest Case 5: Identical Curves" << endl;
+  testFDistance(pointsP5, pointsQ5);
   testGED(pointsP5, pointsQ5);
 
   cout << "\nTest Case 6: Complex Random Sequences" << endl;
+  testFDistance(pointsP6, pointsQ6);
   testGED(pointsP6, pointsQ6);
 
   return 0;
